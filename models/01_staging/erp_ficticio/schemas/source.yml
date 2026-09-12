@@ -1,0 +1,53 @@
+version: 2
+
+sources:
+  - name: erp_ficticio
+    database: bronze
+    schema: erp_ficticio
+    description: >
+      Fonte fictícia simulando um ERP genérico, ingerida via o pipeline
+      ADF -> ADLS Gen2 -> Databricks (ver repositório apolo-infra) até a camada
+      Bronze do Unity Catalog (catalog "bronze" / schema "erp_ficticio").
+      Staging aponta via source() para essas tabelas já materializadas na Bronze.
+    tables:
+      - name: clientes
+        identifier: erp_ficticio_clientes
+        description: "Cadastro de clientes (simulação de tabela mestre de cliente)."
+        config:
+          loaded_at_field: cast(ingestion_datetime as timestamp)
+          freshness:
+            warn_after: { count: 1, period: day }
+        columns:
+          - name: cod_cliente
+            description: "Identificador único do cliente na fonte."
+            tests:
+              - not_null
+              - unique
+
+      - name: produtos
+        identifier: erp_ficticio_produtos
+        description: "Cadastro de produtos (simulação de tabela mestre de material)."
+        config:
+          loaded_at_field: cast(ingestion_datetime as timestamp)
+          freshness:
+            warn_after: { count: 1, period: day }
+        columns:
+          - name: cod_produto
+            description: "Identificador único do produto na fonte."
+            tests:
+              - not_null
+              - unique
+
+      - name: pedidos
+        identifier: erp_ficticio_pedidos
+        description: "Pedidos de venda (simulação de tabela transacional)."
+        config:
+          loaded_at_field: cast(ingestion_datetime as timestamp)
+          freshness:
+            warn_after: { count: 1, period: day }
+        columns:
+          - name: cod_pedido
+            description: "Identificador único do pedido na fonte."
+            tests:
+              - not_null
+              - unique

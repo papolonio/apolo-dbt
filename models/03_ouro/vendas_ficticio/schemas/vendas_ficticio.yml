@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: dim_cliente
+    description: "Dimensao de cliente, CNPJ mascarado por padrao (ver dim_cliente_pii para o dado bruto)."
+    columns:
+      - name: sk_cliente
+        tests:
+          - not_null
+          - unique
+      - name: cod_cliente
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_cliente_pii
+    description: "Espelha dim_cliente, mas com CNPJ em texto puro. Acesso deveria ser restrito em producao."
+    columns:
+      - name: sk_cliente
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_produto
+    description: "Dimensao de produto."
+    columns:
+      - name: sk_produto
+        tests:
+          - not_null
+          - unique
+      - name: cod_produto
+        tests:
+          - not_null
+          - unique
+
+  - name: fct_pedido_venda
+    description: "Fato de pedidos de venda, incremental, exclui registros em quarentena (ver fct_pedido_venda_quarentena)."
+    columns:
+      - name: sk_pedido
+        tests:
+          - not_null
+          - unique
+      - name: cod_pedido
+        tests:
+          - not_null
+          - unique
+      - name: sk_cliente
+        tests:
+          - not_null
+      - name: sk_produto
+        tests:
+          - not_null
+
+  - name: fct_pedido_venda_quarentena
+    description: "Pedidos com chave estrangeira nula (cliente ou produto ausente), separados do fato principal."
+    columns:
+      - name: cod_pedido
+        tests:
+          - not_null
+      - name: motivo_quarentena
+        tests:
+          - not_null

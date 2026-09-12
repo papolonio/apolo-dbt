@@ -1,0 +1,47 @@
+name: 'apolo'
+version: '1.0.0'
+config-version: 2
+
+profile: 'apolo'
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+test-paths: ["tests"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# O Databricks Free Edition tem Unity Catalog (1 metastore por conta), entao
+# bronze/prata/ouro sao CATALOGS (nivel mais alto do Unity Catalog), e o schema
+# dentro de cada catalog e o nome da fonte (bronze/prata) ou do dominio de
+# negocio (ouro).
+models:
+  apolo:
+    01_staging:
+      +tags: ['staging']
+      # ephemeral em prod, table em dev/local (facilita debug).
+      +materialized: "{{ 'ephemeral' if target.name == 'prod' else 'table' }}"
+      erp_ficticio:
+        +schema: erp_ficticio
+
+    02_prata:
+      +tags: ['prata']
+      +materialized: table
+      +catalog: prata
+      erp_ficticio:
+        +schema: erp_ficticio
+
+    03_ouro:
+      +tags: ['ouro']
+      +materialized: table
+      +catalog: ouro
+      vendas_ficticio:
+        +schema: vendas_ficticio
+
+# Sem bloco `seeds:` aqui: a Bronze e alimentada de verdade pelo pipeline
+# ADF -> ADLS Gen2 -> Databricks (ver repositorio apolo-infra), nao por
+# `dbt seed`. O source `erp_ficticio` (models/01_staging/.../schemas/source.yml)
+# aponta para o catalog bronze/schema erp_ficticio que essa pipeline popula.

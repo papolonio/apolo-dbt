@@ -1,0 +1,32 @@
+# Este profiles.yml fica versionado no repo (nao em ~/.dbt/profiles.yml) e usa
+# env_var() para nunca commitar segredo nenhum.
+# Os valores reais (host/http_path/token) ficam em um arquivo .env local (gitignorado),
+# copiado a partir de .exemplo.env.
+#
+# Para rodar o dbt apontando pra este arquivo (em vez do ~/.dbt padrao), use:
+#   export DBT_PROFILES_DIR=.
+# (ou passe --profiles-dir . em cada comando)
+
+apolo:
+  target: dev
+  outputs:
+    dev:
+      type: databricks
+      catalog: "prata"
+      schema: "{{ env_var('DBT_DEV_SCHEMA', 'dev_pedro') }}"
+      host: "{{ env_var('DBT_DATABRICKS_HOST') }}"
+      http_path: "{{ env_var('DBT_DATABRICKS_HTTP_PATH') }}"
+      token: "{{ env_var('DBT_DATABRICKS_TOKEN') }}"
+      threads: 2
+
+    # NOTA: no Free Edition existe apenas 1 workspace/warehouse, entao "prod" aqui
+    # aponta para o MESMO warehouse do "dev". Serve so para praticar a mecanica de
+    # targets/branches do dbt.
+    prod:
+      type: databricks
+      catalog: "prata"
+      schema: "prod"
+      host: "{{ env_var('DBT_DATABRICKS_HOST') }}"
+      http_path: "{{ env_var('DBT_DATABRICKS_HTTP_PATH') }}"
+      token: "{{ env_var('DBT_DATABRICKS_TOKEN') }}"
+      threads: 2

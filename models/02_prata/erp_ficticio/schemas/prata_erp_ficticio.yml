@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: prata_cli_cliente
+    description: "Cliente conformado (dominio ficticio 'cli')."
+    columns:
+      - name: sk_cliente
+        description: "Surrogate key (xxhash64 do cod_cliente)."
+        tests:
+          - not_null
+          - unique
+      - name: cod_cliente
+        tests:
+          - not_null
+          - unique
+
+  - name: prata_mat_produto
+    description: "Produto conformado (dominio ficticio 'mat', prefixo usado para material)."
+    columns:
+      - name: sk_produto
+        tests:
+          - not_null
+          - unique
+      - name: cod_produto
+        tests:
+          - not_null
+          - unique
+
+  - name: prata_ped_pedido
+    description: "Pedido de venda conformado, com flag de quarentena para registros com chave estrangeira nula."
+    columns:
+      - name: sk_pedido
+        tests:
+          - not_null
+          - unique
+      - name: cod_pedido
+        tests:
+          - not_null
+          - unique
