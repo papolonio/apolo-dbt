@@ -2,9 +2,9 @@
     materialized='incremental',
     unique_key=['cod_pedido'],
     on_schema_change='append_new_columns',
+    tags=['tier_frequente'],
     databricks_tags={
-        'frequencia_atualizacao': 'D-1',
-        'hora_inicio_atualizacao': '03:00',
+        'frequencia_atualizacao': 'intraday',
         'fonte': 'erp_ficticio',
         'tipo_fonte': 'erp',
         'dominio': 'vendas_ficticio',

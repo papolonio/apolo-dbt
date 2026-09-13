@@ -28,5 +28,8 @@ jobs:
       - name: dbt deps
         run: dbt deps
 
+      - name: Validar tags de tier (transform_job_geral vs transform_job_frequente)
+        run: python scripts/validate_tiers.py
+
       - name: dbt build
         run: dbt build --target dev

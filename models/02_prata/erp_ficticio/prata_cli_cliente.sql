@@ -1,3 +1,5 @@
+{{ config(tags=['tier_padrao']) }}
+
 with
 cliente as (
     select * from {{ ref('stg_erp_ficticio__clientes') }}

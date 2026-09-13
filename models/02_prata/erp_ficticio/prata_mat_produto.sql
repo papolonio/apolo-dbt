@@ -1,3 +1,5 @@
+{{ config(tags=['tier_padrao']) }}
+
 with
 produto as (
     select * from {{ ref('stg_erp_ficticio__produtos') }}

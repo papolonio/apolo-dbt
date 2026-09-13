@@ -1,4 +1,5 @@
 {{ config(
+    tags=['tier_padrao'],
     databricks_tags={
         'frequencia_atualizacao': 'D-1',
         'fonte': 'erp_ficticio',

@@ -1,3 +1,5 @@
+{{ config(tags=['tier_frequente']) }}
+
 {#
     Aqui aplicamos o padrao de "quarentena" do template: pedidos com cod_cliente nulo
     (dado essencial ausente) sao sinalizados via flag_registro_invalido_quarentena,

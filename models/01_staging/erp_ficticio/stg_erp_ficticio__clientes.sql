@@ -1,3 +1,5 @@
+{{ config(tags=['tier_padrao']) }}
+
 with
 cliente as (
     select

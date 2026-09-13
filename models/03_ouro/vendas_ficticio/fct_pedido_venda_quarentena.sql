@@ -1,4 +1,5 @@
 {{ config(
+    tags=['tier_frequente'],
     databricks_tags={
         'fonte': 'erp_ficticio',
         'dominio': 'vendas_ficticio',

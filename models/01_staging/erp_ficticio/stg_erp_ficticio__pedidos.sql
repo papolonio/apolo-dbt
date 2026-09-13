@@ -1,3 +1,5 @@
+{{ config(tags=['tier_frequente']) }}
+
 with
 pedido as (
     select
